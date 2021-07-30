@@ -72,68 +72,19 @@ public class PushReceiptTest {
                 .promotionCode("xyz")
                 .build();
 
-        when(receiptRepository.pushReceipt(any(Receipt.class))).thenReturn(mockReceipt);
+        when(receiptRepository.pushReceipt(any(Receipt.class))).thenReturn("OK");
 
-        Receipt receiptActual = receiptService.pushReceipt(inputReceipt);
+        String actual = receiptService.pushReceipt(inputReceipt);
 
-        Receipt receiptExpect = Receipt.builder()
-                .id(1L)
-                .tokenKey("1234")
-                .apiID("rest")
-                .username("abcxyz")
-                .mobile("0123456789")
-                .bankCode("970445")
-                .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021726000000"))
-                .additionalData("")
-                .debitAmount(5000.0)
-                .orderCode("abc")
-                .realAmount(4800.0)
-                .promotionCode("xyz")
-                .createDate(simpleDateFormat.parse("2021726000000"))
-                .build();
+        String expect = "OK";
 
-        assertEquals(receiptExpect, receiptActual);
+        assertEquals(expect, actual);
     }
 
     @SneakyThrows
     @Test
     void createReceiptSuccessWhenTokenExistsDifferentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        Receipt mockReceiptInDB = Receipt.builder()
-                .id(1L)
-                .tokenKey("1234")
-                .apiID("rest")
-                .username("abcxyz")
-                .mobile("0123456789")
-                .bankCode("970445")
-                .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021725000000"))
-                .additionalData("")
-                .debitAmount(5000.0)
-                .orderCode("abc")
-                .realAmount(4800.0)
-                .promotionCode("xyz")
-                .createDate(simpleDateFormat.parse("2021725000000"))
-                .build();
-
-
-        Receipt mockReceiptSaveInDB = Receipt.builder()
-                .id(1L)
-                .tokenKey("1234")
-                .apiID("rest")
-                .username("abcxyz")
-                .mobile("0123456789")
-                .bankCode("970445")
-                .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021726000000"))
-                .additionalData("")
-                .debitAmount(5000.0)
-                .orderCode("abc")
-                .realAmount(4800.0)
-                .promotionCode("xyz")
-                .createDate(simpleDateFormat.parse("2021726000000"))
-                .build();
 
         when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
 
@@ -152,28 +103,13 @@ public class PushReceiptTest {
                 .promotionCode("xyz")
                 .build();
 
-        when(receiptRepository.pushReceipt(inputReceipt)).thenReturn(mockReceiptSaveInDB);
+        when(receiptRepository.pushReceipt(inputReceipt)).thenReturn("OK");
 
-        Receipt receiptActual = receiptService.pushReceipt(inputReceipt);
+        String actual = receiptService.pushReceipt(inputReceipt);
 
-        Receipt receiptExpect = Receipt.builder()
-                .id(1L)
-                .tokenKey("1234")
-                .apiID("rest")
-                .username("abcxyz")
-                .mobile("0123456789")
-                .bankCode("970445")
-                .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021726000000"))
-                .additionalData("")
-                .debitAmount(5000.0)
-                .orderCode("abc")
-                .realAmount(4800.0)
-                .promotionCode("xyz")
-                .createDate(simpleDateFormat.parse("2021726000000"))
-                .build();
+        String expect = "OK";
 
-        assertEquals(receiptExpect, receiptActual);
+        assertEquals(expect, actual);
     }
 
     @Test

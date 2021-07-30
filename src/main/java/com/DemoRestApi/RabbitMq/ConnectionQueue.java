@@ -6,7 +6,6 @@ import com.rabbitmq.client.ConnectionFactory;
 import lombok.Data;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeoutException;
 
 @Data
@@ -21,6 +20,9 @@ public class ConnectionQueue {
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+        channel.queuePurge(QUEUE_NAME);
+        channel.basicQos(1);
         return channel;
     }
 }
+

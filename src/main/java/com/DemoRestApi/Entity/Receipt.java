@@ -35,5 +35,5 @@ public class Receipt {
     private Double realAmount;
     private String promotionCode;
     private JSONObject addValue;
-    private Date createDate;
+    private Date createDate = new Date();
 }

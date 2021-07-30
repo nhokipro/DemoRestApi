@@ -125,6 +125,12 @@
             <artifactId>json</artifactId>
             <version>20180130</version>
         </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>3.16.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>
