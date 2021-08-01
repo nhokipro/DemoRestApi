@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.json.JSONObject;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -22,7 +22,7 @@ public class Receipt {
     private String mobile;
     private String bankCode;
     private String accountNo;
-    private Date payDate;
+    private String payDate;
     private String additionalData;
     private Double debitAmount;
     private String respCode;
@@ -34,6 +34,6 @@ public class Receipt {
     private String username;
     private Double realAmount;
     private String promotionCode;
-    private JSONObject addValue;
+    private String addValue;
     private Date createDate = new Date();
 }

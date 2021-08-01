@@ -1,7 +1,9 @@
 import com.DemoRestApi.Entity.Receipt;
+import com.DemoRestApi.Entity.RestResponseHandle;
 import com.DemoRestApi.Exception.*;
 import com.DemoRestApi.Repository.ReceiptRepository;
 import com.DemoRestApi.Service.ReceiptService;
+import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,8 +11,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import redis.clients.jedis.Jedis;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,35 +32,24 @@ public class PushReceiptTest {
     @Mock
     private ReceiptRepository receiptRepository;
 
+    @Mock
+    private Jedis jedis;
+
     private ReceiptService receiptService;
+    private Gson gson;
 
     @BeforeEach
     public void setUp() {
         receiptService = new ReceiptService(
-                receiptRepository
+                receiptRepository,
+                jedis,
+                gson
         );
     }
 
-    @SneakyThrows
     @Test
-    void createReceiptSuccess() {
+    void createReceiptSuccess() throws ParseException, IOException, InterruptedException, TimeoutException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-        Receipt mockReceipt = Receipt.builder()
-                .id(1L)
-                .tokenKey("1234")
-                .apiID("rest")
-                .username("abcxyz")
-                .mobile("0123456789")
-                .bankCode("970445")
-                .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021726000000"))
-                .additionalData("")
-                .debitAmount(5000.0)
-                .orderCode("abc")
-                .realAmount(4800.0)
-                .promotionCode("xyz")
-                .createDate(simpleDateFormat.parse("2021726000000"))
-                .build();
 
         when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
 
@@ -64,19 +60,29 @@ public class PushReceiptTest {
                 .mobile("0123456789")
                 .bankCode("970445")
                 .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021726000000"))
+                .payDate("20210726000000")
                 .additionalData("")
                 .debitAmount(5000.0)
                 .orderCode("abc")
                 .realAmount(4800.0)
                 .promotionCode("xyz")
+                .createDate(new Date())
                 .build();
 
-        when(receiptRepository.pushReceipt(any(Receipt.class))).thenReturn("OK");
+        RestResponseHandle mockRestResponse = RestResponseHandle.builder()
+                .resCode(200)
+                .respDesc("Success")
+                .build();
 
-        String actual = receiptService.pushReceipt(inputReceipt);
+        when(receiptRepository.pushReceipt(inputReceipt)).thenReturn(mockRestResponse);
 
-        String expect = "OK";
+
+        RestResponseHandle actual = receiptService.pushReceipt(inputReceipt);
+
+        RestResponseHandle expect = RestResponseHandle.builder()
+                .resCode(200)
+                .respDesc("Success")
+                .build();
 
         assertEquals(expect, actual);
     }
@@ -95,19 +101,28 @@ public class PushReceiptTest {
                 .mobile("0123456789")
                 .bankCode("970445")
                 .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021726000000"))
+                .payDate("20210726000000")
                 .additionalData("")
                 .debitAmount(5000.0)
                 .orderCode("abc")
                 .realAmount(4800.0)
                 .promotionCode("xyz")
+                .createDate(new Date())
                 .build();
 
-        when(receiptRepository.pushReceipt(inputReceipt)).thenReturn("OK");
+        RestResponseHandle mockRestResponse = RestResponseHandle.builder()
+                .resCode(200)
+                .respDesc("Success")
+                .build();
 
-        String actual = receiptService.pushReceipt(inputReceipt);
+        when(receiptRepository.pushReceipt(inputReceipt)).thenReturn(mockRestResponse);
 
-        String expect = "OK";
+        RestResponseHandle actual = receiptService.pushReceipt(inputReceipt);
+
+        RestResponseHandle expect = RestResponseHandle.builder()
+                .resCode(200)
+                .respDesc("Success")
+                .build();
 
         assertEquals(expect, actual);
     }
@@ -171,7 +186,7 @@ public class PushReceiptTest {
                 .mobile("0123456789")
                 .bankCode("970445")
                 .accountNo("1")
-                .payDate(simpleDateFormat.parse("2021/07/27"))
+                .payDate("2021/11/30")
                 .additionalData("")
                 .debitAmount(5000.0)
                 .orderCode("xyz")
