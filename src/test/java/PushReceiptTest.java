@@ -1,8 +1,9 @@
-import com.DemoRestApi.Entity.Receipt;
-import com.DemoRestApi.Entity.RestResponseHandle;
-import com.DemoRestApi.Exception.*;
-import com.DemoRestApi.Repository.ReceiptRepository;
-import com.DemoRestApi.Service.ReceiptService;
+import com.Producer.Entity.Receipt;
+import com.Producer.Exception.*;
+import com.Producer.Repository.ReceiptRepository;
+import com.Producer.RestReponseHandle.RestResponseHandle;
+import com.Producer.Service.ReceiptService;
+import com.Producer.Validation.ValidateReceipt;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,6 @@ import java.util.concurrent.TimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -37,10 +37,12 @@ public class PushReceiptTest {
 
     private ReceiptService receiptService;
     private Gson gson;
+    private ValidateReceipt validateReceipt;
 
     @BeforeEach
     public void setUp() {
         receiptService = new ReceiptService(
+                validateReceipt,
                 receiptRepository,
                 jedis,
                 gson
@@ -51,7 +53,7 @@ public class PushReceiptTest {
     void createReceiptSuccess() throws ParseException, IOException, InterruptedException, TimeoutException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")
@@ -92,7 +94,7 @@ public class PushReceiptTest {
     void createReceiptSuccessWhenTokenExistsDifferentDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")
@@ -130,7 +132,7 @@ public class PushReceiptTest {
     @Test
     void createReceiptFailWhenTokenExists() {
 
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(true);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")
@@ -152,7 +154,7 @@ public class PushReceiptTest {
     @SneakyThrows
     @Test
     void createReceiptFailWhenApiIdNull() {
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")
@@ -177,7 +179,7 @@ public class PushReceiptTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
         simpleDateFormat.setLenient(false);
 
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")
@@ -200,7 +202,7 @@ public class PushReceiptTest {
     @SneakyThrows
     @Test
     void createReceiptFailWhenOrderCodeNull() {
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")
@@ -222,7 +224,7 @@ public class PushReceiptTest {
     @SneakyThrows
     @Test
     void createReceiptFailWhenRealAmountThanDebitAmount() {
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")
@@ -244,7 +246,7 @@ public class PushReceiptTest {
     @SneakyThrows
     @Test
     void createReceiptFailWhenPromotionCodeNull() {
-        when(receiptRepository.existByTokenAndCreateDate(anyString(), any())).thenReturn(false);
+        when(receiptRepository.existByTokenAndCreateDate(anyString())).thenReturn(false);
 
         Receipt inputReceipt = Receipt.builder()
                 .tokenKey("1234")

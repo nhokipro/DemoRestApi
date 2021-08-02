@@ -1,4 +1,4 @@
-package com.DemoRestApi.ConnectRedis;
+package com.Producer.ConnectRedis;
 
 import org.junit.jupiter.api.Test;
 import redis.clients.jedis.Jedis;

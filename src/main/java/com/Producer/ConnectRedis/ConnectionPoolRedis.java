@@ -1,4 +1,4 @@
-package com.DemoRestApi.ConnectRedis;
+package com.Producer.ConnectRedis;
 
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;

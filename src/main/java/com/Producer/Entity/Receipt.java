@@ -1,4 +1,4 @@
-package com.DemoRestApi.Entity;
+package com.Producer.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Data

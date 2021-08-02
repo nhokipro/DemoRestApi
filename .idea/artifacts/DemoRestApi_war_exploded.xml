@@ -11,7 +11,7 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="DemoRestApi" />
+          <element id="module-output" name="Producer" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: com.sun.jersey:jersey-server:1.19.4" />
@@ -52,7 +52,7 @@
       <element id="directory" name="META-INF">
         <element id="file-copy" path="$PROJECT_DIR$/target/DemoRestApi-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
       </element>
-      <element id="javaee-facet-resources" facet="DemoRestApi/web/Web" />
+      <element id="javaee-facet-resources" facet="Producer/web/Web" />
     </root>
   </artifact>
 </component>

@@ -5,9 +5,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.example</groupId>
-    <artifactId>DemoRestApi</artifactId>
+    <artifactId>Producer</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>DemoRestApi</name>
+    <name>Producer</name>
     <packaging>war</packaging>
 
     <properties>
